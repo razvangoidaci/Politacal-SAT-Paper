@@ -8,8 +8,8 @@
 \usepackage[english]{babel} % Language
 \usepackage{csquotes}       % Recommended for biblatex with babel
 \usepackage[margin=1in]{geometry} % Page margins
-\usepackage{listings}       % Code listings
-\usepackage{xcolor}         % Colors for code listings
+% \usepackage{listings}       % Code listings % No longer needed for embedding full code
+\usepackage{xcolor}         % Colors
 \usepackage{hyperref}       % Clickable links and references
 \usepackage[
     backend=biber,      % Use biber backend for bibliography
@@ -17,35 +17,6 @@
     sorting=nyt         % Sort bibliography by name, year, title
 ]{biblatex}
 \addbibresource{political_sat_paper.bib} % Specify the .bib file
-
-% --- CODE LISTING STYLE ---
-% Define colors for syntax highlighting
-\definecolor{codegreen}{rgb}{0,0.6,0}
-\definecolor{codegray}{rgb}{0.5,0.5,0.5}
-\definecolor{codepurple}{rgb}{0.58,0,0.82}
-\definecolor{backcolour}{rgb}{0.95,0.95,0.92} % Light background for code
-
-% Define the style for Python code listings
-\lstdefinestyle{mystyle}{
-    backgroundcolor=\color{backcolour},
-    commentstyle=\color{codegreen},
-    keywordstyle=\color{magenta},       % Python keywords
-    numberstyle=\tiny\color{codegray},
-    stringstyle=\color{codepurple},
-    basicstyle=\ttfamily\footnotesize, % Font size and family for code
-    breakatwhitespace=false,          % Don't break lines only at whitespace
-    breaklines=true,                  % Automatic line breaking
-    captionpos=b,                     % Caption position below listing
-    keepspaces=true,                  % Keep spaces to maintain indentation
-    numbers=left,                     % Line numbers on the left
-    numbersep=5pt,                    % Distance of numbers from code
-    showspaces=false,                 % Don't show spaces visually
-    showstringspaces=false,           % Don't show spaces in strings visually
-    showtabs=false,                   % Don't show tabs visually
-    tabsize=2,                        % Tab size equivalent in spaces
-    language=Python                   % Set language to Python for keywords
-}
-\lstset{style=mystyle} % Apply this style globally
 
 % --- HYPERREF SETUP ---
 % Setup for PDF metadata and link colors
@@ -55,23 +26,22 @@
     filecolor=magenta,        % Color for file links
     urlcolor=cyan,            % Color for URLs
     citecolor=red,            % Color for bibliography citations
-    pdftitle={Formalizing Global Politics as a SAT Problem},
+    pdftitle={Formalizing Global Politics as a SAT Problem: Enhanced Analysis and Insights},
     pdfauthor={Razvan Goidaci},
-    pdfsubject={SAT Solvers for Political Modeling},
-    pdfkeywords={SAT, DPLL, Resolution, DP, Politics, Modeling, Logic, Romania, Timisoara},
+    pdfsubject={SAT Solvers for Political Modeling, Logical Consistency and Scenario Analysis},
+    pdfkeywords={SAT, DPLL, Resolution, DP, Politics, Modeling, Logic, Scenario Analysis, Consistency, Romania, Timisoara, GitHub},
 }
 
 % --- TITLE AND AUTHOR ---
-\title{Formalizing Global Politics as a SAT Problem: Insights from Resolution, DP, and DPLL}
+\title{Formalizing Global Politics as a SAT Problem: Enhanced Analysis of Logical Consistency and Scenario Feasibility}
 \author{
     Razvan Goidaci \\
     \texttt{razvan.goidaci05@e-uvt.ro} \\ \\
     Artificial Intelligence Specialization \\
     Facultatea de Matematică și Informatică \\
     Universitatea de Vest din Timișoara (UVT) \\
-    Timișoara, Romania % Added location context
+    Timișoara, Romania
 }
-% Use \date{\today} for current date, or specify like \date{April 22, 2025}
 \date{\today}
 
 % --- DOCUMENT START ---
@@ -81,29 +51,27 @@
 
 % --- ABSTRACT ---
 \begin{abstract}
-This paper presents an exploratory approach to modeling aspects of global political problems using Boolean Satisfiability (SAT) solving techniques. We investigate how political statements, conditions, and dependencies can be translated into logical expressions and converted into Conjunctive Normal Form (CNF). The logical consistency of these models is then evaluated using implementations of three classical SAT solving algorithms: Propositional Resolution \cite{Robinson1965}, the Davis-Putnam (DP) procedure \cite{DavisPutnam1960}, and the Davis–Putnam–Logemann–Loveland (DPLL) algorithm \cite{DPLL1962}. By applying these methods, we aim to determine if a set of political assumptions and rules is logically consistent or inherently contradictory. This work bridges simplified political modeling with algorithmic logic, offering a perspective on the challenges and potential of using formal methods in political analysis.
+This paper presents an enhanced exploratory approach to modeling aspects of global political problems using Boolean Satisfiability (SAT) solving techniques. We investigate how political statements, conditions, and dependencies can be translated into logical expressions and converted into Conjunctive Normal Form (CNF). The logical consistency of these models is then evaluated using implementations of three classical SAT solving algorithms: Propositional Resolution \cite{Robinson1965}, the Davis-Putnam (DP) procedure \cite{DavisPutnam1960}, and the Davis–Putnam–Logemann–Loveland (DPLL) algorithm \cite{DPLL1962}. Beyond merely determining if a set of political assumptions and rules is logically consistent or inherently contradictory, this work aims to explore the sensitivity of these models to changes in underlying assumptions and to analyze the feasibility of different political scenarios. By demonstrating how variations in input conditions affect outcomes, we highlight critical factors within simplified political frameworks. This research bridges simplified political modeling with algorithmic logic, offering a deeper perspective on the challenges, potential, and nuanced insights achievable when using formal methods to dissect the logical architecture of political discourse and decision-making. The source code for the implemented algorithms is available on GitHub.
 \end{abstract}
 
 % --- SECTIONS ---
 \section{Introduction}
 
-Global politics involves complex interactions, negotiations, and conflicts where decisions are often based on intricate sets of conditions and potential consequences. Understanding the logical consistency of political positions or the implications of certain actions can be challenging. This paper explores the idea of using tools from computer science, specifically Boolean Satisfiability (SAT) solvers, to analyze simplified models of political scenarios.
+Global politics involves complex interactions, negotiations, and conflicts where decisions are often based on intricate sets of conditions and potential consequences. Understanding the logical consistency of political positions or the implications of certain actions can be profoundly challenging. This paper explores the enhanced application of tools from computer science, specifically Boolean Satisfiability (SAT) solvers, to analyze simplified models of political scenarios. The core idea is to represent political statements and rules using propositional logic, translate them into a standard format (Conjunctive Normal Form - CNF), and then use algorithms to check if there's a way for all these rules to be true simultaneously (i.e., if the model is satisfiable).
 
-The core idea is to represent political statements and rules using propositional logic, translate them into a standard format (Conjunctive Normal Form - CNF), and then use algorithms to check if there's a way for all these rules to be true simultaneously (i.e., if the model is satisfiable). We use three well-known algorithms for this task: Propositional Resolution \cite{Robinson1965}, the Davis-Putnam (DP) procedure \cite{DavisPutnam1960}, and the more modern Davis-Putnam-Logemann-Loveland (DPLL) algorithm \cite{DPLL1962}. We have implemented these algorithms in Python (see Appendices \ref{app:resolution}, \ref{app:dp}, \ref{app:dpll}).
+We utilize three well-known algorithms for this task: Propositional Resolution \cite{Robinson1965}, the Davis-Putnam (DP) procedure \cite{DavisPutnam1960}, and the more modern Davis-Putnam-Logemann-Loveland (DPLL) algorithm \cite{DPLL1962}. We have implemented these algorithms in Python (source code available in Appendices \ref{app:sourcecode}). To illustrate this approach, we use examples drawn from international relations, such as imposing sanctions or forming alliances, modeling these situations with logical rules and converting them to CNF clauses to check their consistency.
 
-To show how this works, we use examples drawn from international relations, such as imposing sanctions or forming alliances. We model these situations with logical rules, convert them to CNF clauses, and use our solvers to check their consistency. We also explore a more involved, though still highly simplified, case study inspired by the Russia-Ukraine conflict to see how SAT might help analyze potential outcomes based on a set of rules. The goal is not to predict the future or solve the conflict, but to test if a specific set of modeled assumptions leads to logical contradictions or allows for consistent scenarios.
+A significant portion of this work is dedicated to exploring more involved, though still highly simplified, case studies, including one inspired by the Russia-Ukraine conflict. The objective extends beyond merely testing if a specific set of modeled assumptions leads to logical contradictions or allows for consistent scenarios. We aim to demonstrate the analytical power of SAT solvers in performing sensitivity analysis—examining how systematic variations in input clauses (political assumptions) alter the satisfiability of the model and highlight critical pivot points in potential outcomes. This "what-if" analysis is crucial for understanding the conditions under which different political outcomes become logically feasible or impossible within the defined model. This approach offers a novel lens to dissect the logical architecture of political discourse, potentially revealing non-obvious implications or hidden inconsistencies that might be overlooked by traditional qualitative analysis, thereby moving towards evaluating the potential of SAT solvers as a preliminary diagnostic tool for political analysts.
 
 \subsection*{Reading Instructions}
-Section \ref{sec:formal} explains the basic concepts of propositional logic and CNF used for modeling. Section \ref{sec:implementation} describes our Python implementations of the SAT solvers and how problems are represented and input. Section \ref{sec:casestudies} presents the case studies, showing the application of the solvers. Section \ref{sec:relatedwork} briefly discusses related areas of work. Section \ref{sec:conclusions} concludes with a summary of our findings and potential future research directions. The Appendices contain the source code and other details.
+Section \ref{sec:formal} explains the basic concepts of propositional logic and CNF used for modeling. Section \ref{sec:implementation} describes our Python implementations of the SAT solvers and how problems are represented and input. Section \ref{sec:casestudies} presents the enhanced case studies, showing the application of the solvers for consistency checking and scenario analysis. Section \ref{sec:relatedwork} discusses related areas of work, further situating our contribution. Section \ref{sec:conclusions} concludes with a summary of our findings and expanded future research directions. The Appendices provide links to the source code.
 
 \subsection*{Declaration of Originality}
-The work presented in this paper is my own. The Python implementations of the Resolution, DP, and DPLL algorithms (Appendices \ref{app:resolution}, \ref{app:dp}, \ref{app:dpll}) were developed from scratch based on standard algorithm descriptions \cite{Robinson1965, DavisPutnam1960, DPLL1962}. The methodology for applying these solvers to analyze simplified political models, including the case studies presented, is my original contribution. Standard algorithms and concepts are referenced appropriately.
-
+The work presented in this paper is my own. The Python implementations of the Resolution, DP, and DPLL algorithms (referenced in Appendix \ref{app:sourcecode}) were developed from scratch based on standard algorithm descriptions \cite{Robinson1965, DavisPutnam1960, DPLL1962}. The methodology for applying these solvers to analyze simplified political models, including the development and extended analysis of the case studies presented, is my original contribution. Standard algorithms and concepts are referenced appropriately.
 
 \section{Formal Description of Problem/Solution} \label{sec:formal}
 
 To analyze a political scenario using SAT, we first need to translate it into the language of propositional logic.
-
 \begin{itemize}
     \item \textbf{Propositions:} We identify key statements or conditions and represent them with propositional variables (usually single uppercase letters). For example, $S$ could represent "Country X imposes sanctions," or $A$ could represent "Treaty Y is signed." Each variable can be either True or False.
     \item \textbf{Logical Operators:} We connect these propositions using standard logical operators:
@@ -114,10 +82,10 @@ To analyze a political scenario using SAT, we first need to translate it into th
         \item $\Rightarrow$ (IMPLIES): Implication (e.g., $A \Rightarrow B$ means "If A is true, then B must also be true." This is logically equivalent to $\neg A \vee B$).
     \end{itemize}
     \item \textbf{Clauses and CNF:} Political rules and dependencies are often expressed as implications or other logical formulas. To use standard SAT solvers, these formulas must be converted into Conjunctive Normal Form (CNF). A CNF formula is an AND of clauses, where each clause is an OR of literals (a literal is a variable or its negation).
-        \begin{itemize}
+    \begin{itemize}
             \item Example: The statement "If a violation ($V$) occurs, then either sanctions ($S$) are imposed or aid ($R$) is reduced" can be written as $V \Rightarrow (S \vee R)$.
             \item This is equivalent to $\neg V \vee (S \vee R)$, which is already a single clause: $(\neg V \vee S \vee R)$.
-        \end{itemize}
+    \end{itemize}
     \item \textbf{The SAT Problem:} Given a set of clauses in CNF representing the rules and facts of our political model, the SAT problem is to determine if there exists an assignment of True/False values to the variables such that \textit{all} clauses are simultaneously true.
     \begin{itemize}
         \item If such an assignment exists, the set of clauses (and the model it represents) is \textbf{Satisfiable (SAT)}.
@@ -125,27 +93,30 @@ To analyze a political scenario using SAT, we first need to translate it into th
     \end{itemize}
 \end{itemize}
 
+\subsection*{Justification for SAT}
+The choice of Boolean Satisfiability as the foundational framework for this exploratory analysis is deliberate. Its focus on determining the existence of a satisfying assignment for a set of logical constraints makes it particularly adept at rigorously testing the logical coherence of complex sets of political rules and conditions. Unlike some other formal methods, such as game theory which often presupposes actor rationality and utility functions, SAT allows for an examination of the logical consequences of stated premises in a more direct fashion. This is especially useful in political contexts where rules, treaties, and public stances may have intricate logical interdependencies that are not immediately apparent. By focusing on satisfiability, we can identify potential contradictions or necessary consequences within a given political framework, offering a foundational layer of logical analysis before more complex factors like probabilities or actor intentions are introduced.
+
 \subsection*{Algorithms Used}
 
 \begin{itemize}
-    \item \textbf{Resolution:} This method \cite{Robinson1965} repeatedly applies the resolution rule: From two clauses $(A \vee l)$ and $(B \vee \neg l)$, we can infer the new clause $(A \vee B)$. If we can eventually derive the empty clause ($\{\}$ or $\Box$, representing False), the original set was UNSAT. It's a complete method for proving unsatisfiability. Our implementation is in Appendix \ref{app:resolution}.
-    \item \textbf{Davis-Putnam (DP):} An older algorithm \cite{DavisPutnam1960} that uses rules like the one-literal rule (if a clause is just $\{l\}$, then $l$ must be true) and the pure literal rule (if a literal $l$ appears but $\neg l$ never does, assign $l$ to true) to simplify the problem, potentially combined with resolution. Our implementation is in Appendix \ref{app:dp}.
-    \item \textbf{Davis-Putnam-Logemann-Loveland (DPLL):} A more efficient, backtracking-based algorithm \cite{DPLL1962} widely used today. It uses unit propagation (similar to the one-literal rule) and then guesses a value for a variable (splitting), recursively trying to solve the simplified problem. If a guess leads to a contradiction, it backtracks and tries the opposite value. Our implementation is in Appendix \ref{app:dpll}.
+    \item \textbf{Resolution:} This method \cite{Robinson1965} repeatedly applies the resolution rule: From two clauses $(A \vee l)$ and $(B \vee \neg l)$, we can infer the new clause $(A \vee B)$. If we can eventually derive the empty clause ($\{\}$ or $\Box$, representing False), the original set was UNSAT. It's a complete method for proving unsatisfiability. Our implementation is referenced in Appendix \ref{app:resolution_code}.
+    \item \textbf{Davis-Putnam (DP):} An older algorithm \cite{DavisPutnam1960} that uses rules like the one-literal rule (if a clause is just $\{l\}$, then $l$ must be true) and the pure literal rule (if a literal $l$ appears but $\neg l$ never does, assign $l$ to true) to simplify the problem, potentially combined with resolution. Our implementation is referenced in Appendix \ref{app:dp_code}.
+    \item \textbf{Davis-Putnam-Logemann-Loveland (DPLL):} A more efficient, backtracking-based algorithm \cite{DPLL1962} widely used today. It uses unit propagation (similar to the one-literal rule) and then guesses a value for a variable (splitting), recursively trying to solve the simplified problem. If a guess leads to a contradiction, it backtracks and tries the opposite value. Our implementation is referenced in Appendix \ref{app:dpll_code}.
 \end{itemize}
 
 \subsection*{Correctness and Complexity}
 
 \begin{itemize}
-    \item \textbf{Correctness:} The conversion to CNF maintains logical equivalence. The Resolution, DP, and DPLL algorithms are sound (they don't claim UNSAT for a SAT set) and complete (they will eventually determine satisfiability or unsatisfiability). The \textit{meaningfulness} of the result, however, depends entirely on how accurately the initial political scenario was modeled.
-    \item \textbf{Complexity:} SAT is generally a hard problem (NP-complete). In the worst case, these algorithms can take exponential time relative to the number of variables. However, DPLL and modern solvers often perform surprisingly well on many practical problems. See \cite{Cormen1996} for general algorithm complexity discussions.
+    \item \textbf{Correctness:} The conversion to CNF maintains logical equivalence. The Resolution, DP, and DPLL algorithms are sound (they don't claim UNSAT for a SAT set) and complete (they will eventually determine satisfiability or unsatisfiability). The \textit{meaningfulness} of the result, however, depends entirely on how accurately and comprehensively the initial political scenario was modeled.
+    \item \textbf{Complexity:} SAT is generally a hard problem (NP-complete). In the worst case, these algorithms can take exponential time relative to the number of variables. However, DPLL and modern solvers often perform surprisingly well on many practical problems, especially those with underlying structure. See \cite{Cormen1996} for general algorithm complexity discussions.
 \end{itemize}
 
 \subsection*{Example (Sanction Problem Revisited)}
 Given the political statements:
 \begin{enumerate}
-    \item If a violation ($V$) occurs, then either sanctions ($S$) are imposed or aid ($R$) is reduced. ($V \Rightarrow (S \vee R)$)
-    \item A violation ($V$) has occurred. ($V$)
-    \item Sanctions ($S$) have \textit{not} been imposed. ($\neg S$)
+    \item If a violation ($V$) occurs, then either sanctions ($S$) are imposed or aid ($R$) is reduced ($V \Rightarrow (S \vee R)$).
+    \item A violation ($V$) has occurred ($V$).
+    \item Sanctions ($S$) have \textit{not} been imposed ($\neg S$).
 \end{enumerate}
 
 Convert to CNF clauses:
@@ -155,182 +126,271 @@ Convert to CNF clauses:
     \item $\neg S$
 \end{enumerate}
 
-Clause Set Representation (as used in Python input): \texttt{[['¬V', 'S', 'R'], ['V'], ['¬S']]}
+Clause Set Representation (as used in Python input): \texttt{[['¬V', 'S', 'R'], ['V'], ['¬S']]}.
 
-We can use a SAT solver to see if these conditions are consistent.
+We can use a SAT solver to see if these conditions are consistent, and further, what implications arise.
 
 \section{Modelling the Problem / Implementing the Solution} \label{sec:implementation}
 
 \subsection*{Representing the Problem}
-In our Python implementations (Appendices \ref{app:resolution}, \ref{app:dp}, \ref{app:dpll}), a set of clauses is represented as a list of lists. Each inner list contains strings representing the literals in that clause. For example: \texttt{[['¬A', 'B'], ['A', 'C']]} represents $(\neg A \vee B) \wedge (A \vee C)$.
+In our Python implementations (referenced in Appendix \ref{app:sourcecode}), a set of clauses is represented as a list of lists. Each inner list contains strings representing the literals in that clause. For example: \texttt{[['¬A', 'B'], ['A', 'C']]} represents $(\neg A \vee B) \wedge (A \vee C)$.
 
 \subsection*{Implementation Details}
-We implemented the three solvers (Resolution, DP, DPLL) in Python (see Appendices \ref{app:resolution}, \ref{app:dp}, \ref{app:dpll}). The algorithms are based on the original works by Robinson \cite{Robinson1965}, Davis and Putnam \cite{DavisPutnam1960}, and Davis, Logemann, and Loveland \cite{DPLL1962}.
+We implemented the three solvers (Resolution, DP, DPLL) in Python (referenced in Appendix \ref{app:sourcecode}). The algorithms are based on the original works by Robinson \cite{Robinson1965}, Davis and Putnam \cite{DavisPutnam1960}, and Davis, Logemann, and Loveland \cite{DPLL1962}.
 \begin{itemize}
     \item The code includes functions to check literal format, find complements ($\neg A$ vs $A$), perform resolution (`union`), and implement the specific rules for each algorithm (one-literal, pure literal, splitting).
-    \item The scripts take user input to define the clause set and then run the respective algorithm, printing intermediate steps (if applicable) and the final result.
+    \item The scripts take user input to define the clause set and then run the respective algorithm, printing intermediate steps (if applicable) and the final result. For the case studies, these inputs were manually curated to represent the scenarios.
 \end{itemize}
 
 \subsection*{Programming Manual}
 \begin{itemize}
-    \item \textbf{Files:} \texttt{Propositional Resolution.py} (Appendix \ref{app:resolution}), \texttt{DP.py} (Appendix \ref{app:dp}), \texttt{DPLL.py} (Appendix \ref{app:dpll}).
+    \item \textbf{Files:} The Python scripts \texttt{Propositional Resolution.py}, \texttt{DP.py}, and \texttt{DPLL.py} are available online (see Appendix \ref{app:sourcecode}).
     \item \textbf{Language:} Python 3.
     \item \textbf{Dependencies:} `re` and `copy` standard libraries.
-    \item \textbf{Core Logic:} Each file contains functions implementing the rules of the corresponding SAT algorithm, operating on the list-of-lists clause set representation. The \texttt{create\_clause\_set} function handles user input. % Corrected underscore issue here
+    \item \textbf{Core Logic:} Each file contains functions implementing the rules of the corresponding SAT algorithm, operating on the list-of-lists clause set representation. The \texttt{create\_clause\_set} function handles user input.
 \end{itemize}
 
 \subsection*{User Manual}
 To use one of the solvers:
 \begin{enumerate}
-    \item Run the desired Python script from your terminal (e.g., `python DPLL.py`).
+    \item Download the desired Python script from the GitHub repository (see Appendix \ref{app:sourcecode}).
+    \item Run the script from your terminal (e.g., `python DPLL.py`).
     \item The script will first ask: \texttt{How many clauses are in the clause set?:}. Enter the total number of clauses.
-    \item The script will then prompt you to input each clause, one by one (e.g., \texttt{Input clause number 1:}). Type the literals for that clause separated by spaces (e.g., \texttt{¬P ¬S} or \texttt{A B ¬C}). Ensure literals use the format `A`, `B`, ... for positive literals and `¬A`, `¬B`, ... for negative literals. Press Enter after each clause.
+    \item The script will then prompt you to input each clause, one by one (e.g., \texttt{Input clause number 1:}).
+    \item Type the literals for that clause separated by spaces (e.g., \texttt{¬P ¬S} or \texttt{A B ¬C}). Ensure literals use the format `A`, `B`, ... for positive literals and `¬A`, `¬B`, ... for negative literals. Press Enter after each clause.
     \item After you input all clauses, the script will execute the SAT algorithm. It may print intermediate steps showing how the clause set is modified.
     \item The final output will state whether the input clause set is \textbf{Satisfiable (SAT)} or \textbf{Unsatisfiable (UNSAT)}.
 \end{enumerate}
 
-\section{Case Studies / Experiments} \label{sec:casestudies}
+\section{Case Studies / Experiments: Enhanced Analysis} \label{sec:casestudies}
 
-Here we apply the implemented solvers to analyze the consistency of simplified political models.
+Here we apply the implemented solvers to analyze the consistency and explore scenario variations within simplified political models. The goal is not only to determine satisfiability but also to understand the implications of different assumptions.
 
-\subsection*{Case 1: Sanctions and Aid (Corrected Analysis)}
+\subsection*{Case 1: Sanctions and Aid – Deeper Implications}
 \begin{itemize}
     \item \textbf{Scenario:} Based on the example in Section \ref{sec:formal}.
     \begin{enumerate}
-        \item If a violation ($V$) occurs, then sanctions ($S$) are imposed or aid ($R$) is reduced.
-        \item Violation ($V$) occurred.
-        \item Sanctions ($S$) were not imposed.
+        \item If a violation ($V$) occurs, then sanctions ($S$) are imposed or aid ($R$) is reduced ($V \Rightarrow (S \vee R)$).
+        \item Violation ($V$) occurred ($V$).
+        \item Sanctions ($S$) were not imposed ($\neg S$).
     \end{enumerate}
-    \item \textbf{Clause Set:} \texttt{[['¬V', 'S', 'R'], ['V'], ['¬S']]}
-    \item \textbf{Analysis:} Using unit propagation (as DPLL or DP would):
+    \item \textbf{Base Clause Set:} $C_1 = \{\{\neg V, S, R\}, \{V\}, \{\neg S\}\}$.
+    \item \textbf{Base Analysis:} Using unit propagation:
     \begin{enumerate}
-        \item Unit clause \texttt{['V']} forces $V$=True. Simplify \texttt{['¬V', 'S', 'R']} to $(\text{False} \vee S \vee R)$, which is \texttt{['S', 'R']}.
-        \item Unit clause \texttt{['¬S']} forces $S$=False. Simplify \texttt{['S', 'R']} to $(\text{False} \vee R)$, which is \texttt{['R']}.
-        \item The remaining clauses imply $V$=True, $S$=False, and $R$=True.
+        \item $\{V\}$ forces $V$=True. $C_1$ simplifies to $\{\{S, R\}, \{\neg S\}\}$.
+        \item $\{\neg S\}$ forces $S$=False. $C_1$ simplifies to $\{\{R\}\}$.
+        \item The remaining clause $\{R\}$ forces $R$=True.
     \end{enumerate}
-    \item \textbf{Result:} The set is \textbf{Satisfiable (SAT)}.
-    \item \textbf{Interpretation:} The conditions are logically consistent. For all rules to hold, Aid ($R$) \textit{must} be reduced ($R$=True). There is no contradiction.
+    \item \textbf{Base Result:} The set is \textbf{Satisfiable (SAT)} with $V$=True, $S$=False, $R$=True.
+    \item \textbf{Base Interpretation:} The conditions are logically consistent. For all rules to hold, Aid ($R$) \textit{must} be reduced ($R$=True).
+
+    \item \textbf{Scenario Variation 1.1: What if aid is also not reduced?}
+        \item Add premise: Aid ($R$) is \textit{not} reduced ($\neg R$).
+        \item New Clause Set: $C_{1.1} = C_1 \cup \{\{\neg R\}\} = \{\{\neg V, S, R\}, \{V\}, \{\neg S\}, \{\neg R\}\}$.
+        \item Analysis: Following the base analysis, we derive $\{R\}$. With the additional premise $\{\neg R\}$, resolving $\{R\}$ and $\{\neg R\}$ yields the empty clause $\{\}$.
+        \item Result: $C_{1.1}$ is \textbf{Unsatisfiable (UNSAT)}.
+        \item Interpretation: Within this model, it's logically impossible for a violation to occur, sanctions not to be imposed, AND aid not to be reduced simultaneously. One of these conditions must give way if the primary rule ($V \Rightarrow (S \vee R)$) is to hold. This highlights the direct trade-off or necessary consequence embedded in the initial rule.
+
+    \item \textbf{Scenario Variation 1.2: Under what conditions could aid ($R$) not be reduced, given a violation ($V$) and no sanctions ($\neg S$)?}
+        \item To make $R$=False consistent with $V$=True and $S$=False, the original rule $V \Rightarrow (S \vee R)$ (i.e., $\neg V \vee S \vee R$) must be altered or additional overriding rules must be introduced. For instance, if the rule was changed to $V \Rightarrow (S \vee R \vee X)$ (where $X$ is another possible response), then $R$=False could be consistent if $X$=True. This demonstrates how SAT models can be used to explore necessary changes to a rule-set to achieve a desired outcome.
 \end{itemize}
 
-\subsection*{Case 2: NATO Membership and Regional Stability}
+\subsection*{Case 2: NATO Membership and Regional Stability – Exploring Alternatives}
 \begin{itemize}
     \item \textbf{Scenario:} A simplified model of tensions related to alliance expansion.
     \begin{enumerate}
-        \item If Country A joins NATO ($N$), then Country B increases military spending ($M$). ($N \Rightarrow M$)
-        \item If Country A joins NATO ($N$) AND Country B increases military spending ($M$), then Country C withdraws from a peace treaty ($T$). ($(N \wedge M) \Rightarrow T$)
+        \item If Country A joins NATO ($N$), then Country B increases military spending ($M$) ($N \Rightarrow M$).
+        \item If Country A joins NATO ($N$) AND Country B increases military spending ($M$), then Country C withdraws from a peace treaty ($T$) ($(N \wedge M) \Rightarrow T$).
         \item Country C has \textit{not} withdrawn from the treaty ($\neg T$).
     \end{enumerate}
     \item \textbf{Goal:} Is it consistent for Country A to have joined NATO ($N$=True) under these conditions?
-    \item \textbf{CNF Clauses:}
+    \item \textbf{Base CNF Clauses:} $C_2 = \{\{\neg N, M\}, \{\neg N, \neg M, T\}, \{\neg T\}\}$.
+    \item \textbf{Base Analysis (assuming $N$=True):} Add the unit clause $\{N\}$.
     \begin{enumerate}
-        \item $\neg N \vee M$
-        \item $\neg N \vee \neg M \vee T$
-        \item $\neg T$
+        \item From $\{N\}$ and $\{\neg N, M\}$, resolve to get $\{M\}$.
+        \item From $\{N\}$ and $\{\neg N, \neg M, T\}$, resolve to get $\{\neg M, T\}$.
+        \item From $\{M\}$ and $\{\neg M, T\}$, resolve to get $\{T\}$.
+        \item Now we have $\{T\}$ from deductions and $\{\neg T\}$ from initial conditions. Resolving these gives the empty clause $\{\}$.
     \end{enumerate}
-    \item \textbf{Clause Set:} \texttt{[['¬N', 'M'], ['¬N', '¬M', 'T'], ['¬T']]}
-    \item \textbf{Analysis:} Assume Country A joined NATO, so we add the unit clause \texttt{['N']}.
-    \begin{enumerate}
-        \item From \texttt{['N']} and $(\neg N \vee M)$, resolve to get \texttt{['M']}.
-        \item From \texttt{['N']} and $(\neg N \vee \neg M \vee T)$, resolve to get \texttt{['¬M', 'T']}.
-        \item From \texttt{['M']} and \texttt{['¬M', 'T']}, resolve to get \texttt{['T']}.
-        \item Now we have \texttt{['T']} from our deductions and \texttt{['¬T']} from the initial conditions. Resolving these gives the empty clause $\{\}$.
-    \end{enumerate}
-    \item \textbf{Result:} Assuming $N$=True leads to a contradiction (UNSAT).
-    \item \textbf{Interpretation:} Within this simplified model, it is \textit{not} logically consistent for Country A to have joined NATO given the other stated conditions and outcomes. Country A must not have joined NATO ($N$=False) for this set of rules to hold true.
+    \item \textbf{Base Result:} Assuming $N$=True leads to a contradiction (UNSAT).
+    \item \textbf{Base Interpretation:} Within this simplified model, it is \textit{not} logically consistent for Country A to have joined NATO given the other stated conditions and outcomes. Country A must not have joined NATO ($N$=False) for this set of rules to hold true. The contradiction arises from the implication chain: $N \Rightarrow M$, and $(N \wedge M) \Rightarrow T$, which together with $N$ implies $T$. This directly conflicts with the given $\neg T$.
+
+    \item \textbf{Scenario Variation 2.1: What if Country B does NOT increase military spending ($M$=False) even if Country A joins NATO ($N$=True)?}
+        \item This would mean the first rule ($N \Rightarrow M$, or $\neg N \vee M$) is violated or needs to be conditional. If we assume the rule $N \Rightarrow M$ holds, then $N$=True and $M$=False cannot coexist.
+        \item However, if we are exploring a scenario where the first rule *might not hold* or is overridden, we can test $N$=True, $M$=False, $\neg T$=True.
+        \item With $N$=True and $M$=False:
+            \item Rule 1 ($\neg N \vee M$): $\text{False} \vee \text{False} \rightarrow \text{False}$. This rule is violated. So, this scenario is only possible if Rule 1 is removed or modified.
+            \item If Rule 1 is ignored, and we only have Rule 2 ($(N \wedge M) \Rightarrow T \equiv \neg N \vee \neg M \vee T$) and Rule 3 ($\neg T$):
+                \item Clause Set $C_{2.1} = \{\{\neg N, \neg M, T\}, \{\neg T\}\}$. Add $\{N\}$ and $\{\neg M\}$.
+                \item From $\{N\}, \{\neg M\}, \{\neg N, \neg M, T\}$, unit propagation on $N$ gives $\{\neg M, T\}$. Unit propagation on $\neg M$ gives $\{T\}$.
+                \item We have $\{T\}$ and initial $\{\neg T\}$, leading to UNSAT.
+        \item Interpretation: Even if Country B miraculously doesn't increase spending (violating or changing Rule 1), Country C withdrawing from the treaty is still implied if NATO expansion occurs and spending \textit{were} to increase, and this still conflicts with $\neg T$. To avoid the contradiction, not only would Rule 1 need to change, but Rule 2 would also need to be revisited or an additional factor preventing treaty withdrawal $T$ would be necessary.
+
+    \item \textbf{Scenario Variation 2.2: What if Country C withdrawing from the treaty ($T$) is acceptable?}
+        \item If we change the premise from $\neg T$ to $T$.
+        \item New Clause Set: $C_{2.2} = \{\{\neg N, M\}, \{\neg N, \neg M, T\}, \{T\}\}$.
+        \item Add $\{N\}$ (Country A joins NATO).
+        \item $\{N\}$ and $\{\neg N, M\} \Rightarrow \{M\}$.
+        \item $\{N\}$ and $\{\neg N, \neg M, T\} \Rightarrow \{\neg M, T\}$.
+        \item $\{M\}$ and $\{\neg M, T\} \Rightarrow \{T\}$.
+        \item This derived $\{T\}$ is consistent with the premise $\{T\}$. No contradiction arises from these rules.
+        \item Result: $C_{2.2}$ with added $\{N\}$ is \textbf{Satisfiable (SAT)}.
+        \item Interpretation: If Country C withdrawing from the treaty is an acceptable or expected outcome, then Country A joining NATO is logically consistent with the first two rules. This shows how changing one factual premise can flip the consistency of a broader scenario.
 \end{itemize}
 
-\subsection*{Case 3: Complex Conflict Resolution — Russia–Ukraine War (Highly Simplified Model)}
+\subsection*{Case 3: Complex Conflict Resolution — Russia–Ukraine War (Highly Simplified Model with Scenario Analysis)}
 \begin{itemize}
-    \item \textbf{Disclaimer:} \textit{This case study uses a highly simplified model of an extremely complex real-world conflict. It is intended ONLY to demonstrate the application of SAT solving to a set of logical rules, NOT to provide realistic political analysis or predict outcomes.}
-    \item \textbf{Scenario:} Model conditions related to the conflict to check for logical consistency of potential scenarios.
+    \item \textbf{Disclaimer:} \textit{This case study uses a highly simplified model of an extremely complex real-world conflict. It is intended ONLY to demonstrate the application of SAT solving to a set of logical rules for consistency checking and preliminary scenario exploration, NOT to provide realistic political analysis, predict outcomes, or reflect the full spectrum of views on the conflict.}
+    \item \textbf{Scenario:} Model conditions related to the conflict to check for logical consistency of potential scenarios and explore variations.
     \item \textbf{Variables:}
-        $I$: Russia invades Ukraine, $R$: Ukraine resists, $S$: NATO sends military support to Ukraine, $P$: Peace talks begin, $W$: Ukraine wins the war (defined within the model's terms), $C$: Crimea is returned to Ukraine, $B$: Russia sets up a blockade.
-    \item \textbf{Statements (Simplified Rules):}
+        $I$: Russia invades Ukraine, $R_U$: Ukraine resists, $S_{NATO}$: NATO sends military support to Ukraine, $P$: Peace talks begin, $W_U$: Ukraine wins the war (defined within the model's terms), $C_{Crimea}$: Crimea is returned to Ukraine, $B_{Blockade}$: Russia sets up a blockade. (Subscripts added for clarity).
+    \item \textbf{Statements (Simplified Rules - Base Model $R_0$):}
     \begin{enumerate}
-        \item If Russia invades ($I$) and Ukraine doesn't resist ($\neg R$), Ukraine doesn't win ($\neg W$). ($(I \wedge \neg R) \Rightarrow \neg W$)
-        \item If Ukraine resists ($R$) and receives NATO help ($S$), Ukraine can win ($W$). ($(R \wedge S) \Rightarrow W$)
-        \item If Ukraine wins ($W$), Crimea is returned ($C$). ($W \Rightarrow C$)
-        \item If peace talks begin ($P$), there is no NATO military support ($\neg S$). ($P \Rightarrow \neg S$)
-        \item If there is a blockade ($B$) and Ukraine resists ($R$), peace talks begin ($P$). ($(B \wedge R) \Rightarrow P$)
-        \item Fact: Peace talks have not started ($\neg P$).
+        \item If Russia invades ($I$) and Ukraine doesn't resist ($\neg R_U$), Ukraine doesn't win ($\neg W_U$) ($(I \wedge \neg R_U) \Rightarrow \neg W_U$).
+        \item If Ukraine resists ($R_U$) and receives NATO help ($S_{NATO}$), Ukraine can win ($W_U$) ($(R_U \wedge S_{NATO}) \Rightarrow W_U$).
+        \item If Ukraine wins ($W_U$), Crimea is returned ($C_{Crimea}$) ($W_U \Rightarrow C_{Crimea}$).
+        \item If peace talks begin ($P$), there is no NATO military support ($\neg S_{NATO}$) ($P \Rightarrow \neg S_{NATO}$).
+        \item If there is a blockade ($B_{Blockade}$) and Ukraine resists ($R_U$), peace talks begin ($P$) ($(B_{Blockade} \wedge R_U) \Rightarrow P$).
+        \item Fact: Peace talks have not started ($\neg P$). (This is a crucial initial assumption).
+        \item Fact: Russia has invaded ($I$). (Added for baseline scenario).
     \end{enumerate}
-    \item \textbf{CNF Clauses:}
+    \item \textbf{Base CNF Clauses ($C_3$ from $R_0$):}
     \begin{enumerate}
-        \item $\neg I \vee R \vee \neg W$
-        \item $\neg R \vee \neg S \vee W$
-        \item $\neg W \vee C$
-        \item $\neg P \vee \neg S$
-        \item $\neg B \vee \neg R \vee P$
+        \item $\neg I \vee R_U \vee \neg W_U$
+        \item $\neg R_U \vee \neg S_{NATO} \vee W_U$
+        \item $\neg W_U \vee C_{Crimea}$
+        \item $\neg P \vee \neg S_{NATO}$
+        \item $\neg B_{Blockade} \vee \neg R_U \vee P$
         \item $\neg P$
+        \item $I$
     \end{enumerate}
-    \item \textbf{Clause Set:} \texttt{[['¬I', 'R', '¬W'], ['¬R', '¬S', 'W'], ['¬W', 'C'], ['¬P', '¬S'], ['¬B', '¬R', 'P'], ['¬P']]}
-    \item \textbf{Analysis Example (Checking a Scenario):} Can Ukraine win ($W$=True) consistently within this model, assuming Russia invaded ($I$=True)? Test the assignment: $I$=True, $R$=True, $S$=True, $W$=True, $C$=True, $B$=False, $P$=False.
-    \begin{itemize}
-        \item Clause 1: $(\neg I \vee R \vee \neg W) \rightarrow (\text{False} \vee \text{True} \vee \text{False}) \rightarrow \text{True}$. OK.
-        \item Clause 2: $(\neg R \vee \neg S \vee W) \rightarrow (\text{False} \vee \text{False} \vee \text{True}) \rightarrow \text{True}$. OK.
-        \item Clause 3: $(\neg W \vee C) \rightarrow (\text{False} \vee \text{True}) \rightarrow \text{True}$. OK.
-        \item Clause 4: $(\neg P \vee \neg S) \rightarrow (\text{True} \vee \text{False}) \rightarrow \text{True}$. OK.
-        \item Clause 5: $(\neg B \vee \neg R \vee P) \rightarrow (\text{True} \vee \text{False} \vee \text{False}) \rightarrow \text{True}$. OK.
-        \item Clause 6: $(\neg P) \rightarrow \text{True}$. OK.
-    \end{itemize}
-    \item \textbf{Result:} This specific assignment makes all clauses true, so the clause set is \textbf{Satisfiable (SAT)}.
-    \item \textbf{Interpretation:} This SAT result means the modeled rules \textit{allow} for a scenario where Russia invades, Ukraine resists, receives NATO support, wins (as defined by the model), and Crimea is returned, without peace talks starting and without a blockade. It shows logical consistency \textit{within the simplified framework}. It does \textbf{not} mean this is likely, possible, or desirable in reality. Many other factors are ignored. This mainly demonstrates that the defined rules don't inherently contradict this outcome. Great caution is needed in interpreting these results concerning the real world.
+    \item \textbf{Base Clause Set (for Python):} \texttt{[['¬I', 'R_U', '¬W_U'], ['¬R_U', '¬S_{NATO}', 'W_U'], ['¬W_U', 'C_{Crimea}'], ['¬P', '¬S_{NATO}'], ['¬B_{Blockade}', '¬R_U', 'P'], ['¬P'], ['I']]}.
+
+    \item \textbf{Analysis Example (Base Scenario - Can Ukraine win?):} Test for satisfiability with $W_U$=True.
+        This means we are testing if the set $C_3 \cup \{\{W_U\}\}$ is SAT.
+        \item With $I$=True, $\neg P$=True:
+            \item From $\neg P$ and Rule 4 ($\neg P \vee \neg S_{NATO}$), we deduce $\neg S_{NATO}$ by unit propagation.
+            \item If we want $W_U$=True:
+                \item From Rule 2 ($\neg R_U \vee \neg S_{NATO} \vee W_U$): To get $W_U$=True when $\neg S_{NATO}$ is true, this clause becomes $\neg R_U \vee \text{True} \vee W_U$ (if $S_{NATO}$ is false) or $\neg R_U \vee \neg S_{NATO} \vee \text{True}$ (if $W_U$ is true).
+                If $W_U$=True and $\neg S_{NATO}$=True, then Rule 2 requires $\neg R_U \vee \text{False} \vee \text{True}$ which is True (satisfied if $R_U$ is true or false).
+                However, for $W_U$ to be \textit{caused} by Rule 2, we'd need $R_U$=True and $S_{NATO}$=True. Since we have $\neg S_{NATO}$, Rule 2 cannot be the sole cause of $W_U$=True under these conditions. This suggests $W_U$ must be true for other reasons, or our assumption $\neg P$ (leading to $\neg S_{NATO}$) creates tension.
+        \item Let's test the specific assignment: $I$=True, $R_U$=True, $S_{NATO}$=True, $W_U$=True, $C_{Crimea}$=True, $B_{Blockade}$=False, $P$=False.
+            \item Clause 1: $(\neg I \vee R_U \vee \neg W_U) \rightarrow (\text{F} \vee \text{T} \vee \text{F}) \rightarrow \text{T}$.
+            \item Clause 2: $(\neg R_U \vee \neg S_{NATO} \vee W_U) \rightarrow (\text{F} \vee \text{F} \vee \text{T}) \rightarrow \text{T}$.
+            \item Clause 3: $(\neg W_U \vee C_{Crimea}) \rightarrow (\text{F} \vee \text{T}) \rightarrow \text{T}$.
+            \item Clause 4: $(\neg P \vee \neg S_{NATO}) \rightarrow (\text{T} \vee \text{F}) \rightarrow \text{T}$. (Consistent with $P$=F, $S_{NATO}$=T).
+            \item Clause 5: $(\neg B_{Blockade} \vee \neg R_U \vee P) \rightarrow (\text{T} \vee \text{F} \vee \text{F}) \rightarrow \text{T}$.
+            \item Clause 6: $(\neg P) \rightarrow \text{T}$.
+            \item Clause 7: $(I) \rightarrow \text{T}$.
+        \item \textbf{Result of this specific assignment:} Satisfiable (SAT).
+        \item \textbf{Interpretation of this assignment:} The modeled rules \textit{allow} for a scenario where Russia invades, Ukraine resists, receives NATO support, wins (as defined by the model), and Crimea is returned, without peace talks starting and without a blockade. This shows logical consistency \textit{within the simplified framework only}. It does \textbf{not} mean this is likely or possible in reality due to myriad unmodeled factors.
+
+    \item \textbf{Scenario Variation 3.1: Impact of Peace Talks Starting ($P$=True)}
+        \item New Premise: $P$=True (replacing $\neg P$). Original Clause 6 is removed, Clause $P$ is added.
+        \item Clause Set $C_{3.1}$ uses $P$ instead of $\neg P$.
+        \item Immediate consequence: From $P$=True and Rule 4 ($P \Rightarrow \neg S_{NATO}$ which is $\neg P \vee \neg S_{NATO}$), we deduce $\neg S_{NATO}$ (no NATO support).
+        \item What if we check if Ukraine can win ($W_U$=True) in this scenario ($C_{3.1} \cup \{\{W_U\}\}$)?
+            \item For $W_U$=True to occur via Rule 2 ($(R_U \wedge S_{NATO}) \Rightarrow W_U$), it would require $S_{NATO}$=True.
+            \item But we've deduced $\neg S_{NATO}$. This means Rule 2 cannot be satisfied in a way that causes $W_U$ if peace talks have started (according to this model).
+            \item If $W_U$ were true due to other (unmodeled) reasons, clauses could still be satisfied. E.g., $R_U$=T, $S_{NATO}$=F, $W_U$=T, $P$=T, $I$=T, $C_{Crimea}$=T, $B_{Blockade}$=F.
+                \item R1: $\neg I \vee R_U \vee \neg W_U \rightarrow F \vee T \vee F \rightarrow T$.
+                \item R2: $\neg R_U \vee \neg S_{NATO} \vee W_U \rightarrow F \vee T \vee T \rightarrow T$. (Satisfied, but not "causing" $W_U$ via $S_{NATO}$)
+                \item R3: $\neg W_U \vee C_{Crimea} \rightarrow F \vee T \rightarrow T$.
+                \item R4: $\neg P \vee \neg S_{NATO} \rightarrow F \vee T \rightarrow T$.
+                \item R5: $\neg B_{Blockade} \vee \neg R_U \vee P \rightarrow T \vee F \vee T \rightarrow T$.
+                \item Premise $P \rightarrow T$. Premise $I \rightarrow T$. Premise $W_U \rightarrow T$.
+            \item Result: This specific state ($R_U$=T, $S_{NATO}$=F, $W_U$=T, $P$=T, $I$=T, $C_{Crimea}$=T, $B_{Blockade}$=F) is SAT.
+        \item Interpretation: If peace talks start, direct NATO military support (as per Rule 4) ceases. Ukraine winning (as per Rule 2, which links it to NATO support) becomes unachievable \textit{through that specific mechanism}. However, the overall model can still be satisfiable if $W_U$ is asserted, suggesting other pathways or that the win condition is met differently. This demonstrates how changing a single assumption ($P$ vs $\neg P$) significantly alters the conditions for other outcomes within the model's logic.
+
+    \item \textbf{Scenario Variation 3.2: Impact of a Blockade ($B_{Blockade}$=True) assuming Ukraine Resists ($R_U$=True)}
+        \item Add Premise: $B_{Blockade}$=True and $R_U$=True. We keep $\neg P$ and $I$ from the base $R_0$.
+        \item Clause Set $C_{3.2} = C_3 \cup \{\{B_{Blockade}\}, \{R_U\}\}$.
+        \item From $B_{Blockade}$=True, $R_U$=True and Rule 5 ($(B_{Blockade} \wedge R_U) \Rightarrow P \equiv \neg B_{Blockade} \vee \neg R_U \vee P$), we deduce $P$=True.
+        \item However, our base model $R_0$ includes the premise $\neg P$ (Fact 6).
+        \item Result: The scenario $C_{3.2}$ (which includes the original $\neg P$) is \textbf{Unsatisfiable (UNSAT)}.
+        \item Interpretation: Given the initial set of rules and the fact that "Peace talks have not started", it is logically inconsistent for "Russia to set up a blockade" AND "Ukraine to resist". The rules force peace talks under blockade and resistance, which contradicts the "no peace talks" assumption. This highlights a fundamental tension: if a blockade and resistance occur, then for the model to remain consistent, the assumption about no peace talks must be false (i.e. peace talks must start).
 \end{itemize}
+\textit{Great caution is needed in interpreting any results from such simplified models concerning the real world}. The value is in illustrating the logical analysis method and how assumptions interact.
 
 \section{Related Work} \label{sec:relatedwork}
 
-Boolean Satisfiability is a cornerstone of computer science with applications in hardware verification, artificial intelligence (planning), scheduling, and bioinformatics. Powerful SAT solvers like MiniSAT, Glucose, or Z3 (which handles richer logics) incorporate sophisticated heuristics, learning techniques, and efficient data structures far beyond our basic implementations.
+Boolean Satisfiability is a cornerstone of computer science with applications in hardware verification, artificial intelligence (planning), scheduling, and bioinformatics. Powerful SAT solvers like MiniSAT, Glucose, or Z3 (which handles richer logics like SMT – Satisfiability Modulo Theories) incorporate sophisticated heuristics, learning techniques, and efficient data structures far beyond our basic implementations, capable of handling millions of variables and clauses.
 
-While formal methods and logic have been applied in areas like legal reasoning, formalizing social choice theory, or verifying protocols, their direct application to model dynamic, complex global political conflicts using basic SAT solvers is less common. Game theory is often used for strategic analysis, focusing on payoffs and equilibria, whereas our approach focuses purely on the logical consistency of stated rules and conditions.
+While formal methods and logic have been applied in areas like legal reasoning (e.g., checking consistency of legal codes), formalizing social choice theory, or verifying protocols, their direct application to model dynamic, complex global political conflicts using basic SAT solvers for consistency and scenario analysis is less common, though not absent in broader computational social science. Game theory is often employed for strategic analysis in political science, focusing on actor rationality, payoffs, and equilibria. Agent-based modeling is another computational approach used to simulate interactions.
 
 Our work differs by:
 \begin{itemize}
-    \item Focusing specifically on modeling aspects of \textit{global politics} using propositional logic.
-    \item Using classical algorithms (Resolution \cite{Robinson1965}, DP \cite{DavisPutnam1960}, DPLL \cite{DPLL1962}) implemented for educational purposes (Appendices \ref{app:resolution}, \ref{app:dp}, \ref{app:dpll}).
-    \item Providing an accessible framework for exploring the \textit{potential and limitations} of this approach, rather than claiming predictive power.
+    \item Focusing specifically on modeling aspects of \textit{global politics} using propositional logic to explore the logical consistency of explicitly stated rules and assumptions, and the feasibility of scenarios under these rules.
+    \item Using classical algorithms (Resolution \cite{Robinson1965}, DP \cite{DavisPutnam1960}, DPLL \cite{DPLL1962}) implemented for educational and illustrative purposes (code referenced in Appendix \ref{app:sourcecode}), allowing a transparent view of the logical deduction process.
+    \item Providing an accessible framework for exploring the \textit{potential and limitations} of this approach for initial logical auditing of political statements or simplified models, rather than claiming predictive power or full strategic analysis. The emphasis is on uncovering the logical consequences of a given set of premises.
+    \item Systematically exploring variations in assumptions ("what-if" scenarios) to demonstrate how SAT can be used for sensitivity analysis within these logical models.
 \end{itemize}
 
-\textbf{Advantages:} Provides a clear, logical framework; allows checking consistency of assumptions; educational value in bridging logic and politics.
+The unique niche of this SAT-based approach lies in its capacity to rigorously check the logical coherence of a set of propositions that might represent policy statements, treaty obligations, or public commitments. It can identify if a collection of such statements is mutually consistent or if certain desired outcomes are logically impossible given the stated rules, without initially needing to model actor utilities or probabilities.
 
-\textbf{Limitations:} Difficulty in accurately capturing political nuance in propositional logic; manual translation process; scalability concerns for highly complex models; ignores probabilities, beliefs, and non-rational factors prevalent in politics.
+\textbf{Advantages:} Provides a clear, formal logical framework; allows for rigorous checking of consistency of assumptions and derivation of necessary consequences; educational value in bridging logic and politics; potential for identifying non-obvious contradictions or implications in sets of rules; allows systematic "what-if" scenario exploration based on logical feasibility.
 
+\textbf{Limitations:} Difficulty in accurately and comprehensively capturing the nuances, ambiguities, unstated assumptions, and evolving nature of real-world political situations in propositional logic; the manual translation process from natural language to CNF is complex and potentially subjective; scalability concerns for highly complex, dynamic models with basic solvers (though modern solvers are powerful); inherently ignores crucial factors like probabilities, beliefs, trust, influence, non-rational behavior, power dynamics, and historical context which are prevalent in politics. The model is only as good as its formalization.
 
-\section{Conclusions and Future Work} \label{sec:conclusions}
+\section{Conclusions and Enhanced Future Work} \label{sec:conclusions}
 
-This paper demonstrated an approach for modeling simplified political scenarios as SAT problems and analyzing their logical consistency using implementations of Resolution, DP, and DPLL algorithms. The case studies showed how political rules can be translated into CNF and how SAT solvers can determine if a set of assumptions leads to a contradiction (UNSAT) or allows for consistent outcomes (SAT).
+This paper demonstrated an enhanced approach for modeling simplified political scenarios as SAT problems, analyzing not only their logical consistency but also exploring the feasibility of different outcomes through scenario variation using implementations of Resolution, DP, and DPLL algorithms. The extended case studies showed how political rules can be translated into CNF and how SAT solvers can determine if a set of assumptions leads to a contradiction (UNSAT) or allows for consistent outcomes (SAT), and crucially, how changes in premises affect these conclusions.
 
-The primary challenge remains the \textbf{modeling process} itself. Translating the complexities, ambiguities, and unstated assumptions of real-world politics into precise boolean logic is difficult and requires significant simplification. The results of the SAT analysis are only as meaningful as the underlying model.
+The primary challenge remains the \textbf{modeling process} itself: translating the multifaceted complexities, ambiguities, and unstated assumptions of real-world politics into precise Boolean logic is inherently difficult and necessitates significant simplification. The results of any SAT analysis are critically dependent on the fidelity and comprehensiveness of the underlying model.
 
-While the implemented solvers correctly determined satisfiability for the given clause sets, they revealed that even simple political models can have non-obvious logical consequences (e.g., Case 1 requiring $R$=True, Case 2 implying $N$=False). The analysis of the more complex, highly simplified Russia-Ukraine model (Case 3) showed that SAT can verify the logical possibility of certain scenarios within the defined rules, but great caution is needed in interpreting these results concerning the real world.
+While the implemented solvers correctly determined satisfiability for the given clause sets, the expanded analysis revealed more clearly how even simple political models can have non-obvious logical consequences and how sensitive outcomes can be to initial assumptions (e.g., Case 1 showing aid reduction as a necessity, Case 2 demonstrating conditions for NATO membership consistency, and Case 3 highlighting how factors like peace talks or blockades drastically alter scenario feasibility within the model). The exploration of variations in Case 3 underscored that SAT can verify the logical possibility of certain scenarios within a defined rule-set, but extreme caution is paramount when relating these abstract logical findings to the complexities of the real world. The utility lies in logical auditing and understanding model dynamics, not prediction.
 
-\subsection*{Future Work}
+\subsection*{Enhanced Future Work}
+The exploratory nature of this work opens several avenues for more developed research:
 \begin{itemize}
-    \item \textbf{Richer Modeling:} Explore ways to represent uncertainty or beliefs, potentially using probabilistic or modal logics (though this would require different solving techniques).
-    \item \textbf{Automation:} Develop tools to help automate the translation from structured natural language descriptions of political scenarios into logical formulas and CNF (a challenging NLP task).
-    \item \textbf{Interface:} Create a graphical user interface (GUI) for easier input and visualization of models and results.
-    \item \textbf{Advanced Solvers:} Integrate or compare results with state-of-the-art SAT solvers to handle larger, more complex models.
-    \item \textbf{Refined Case Studies:} Apply the methodology to more rigorously defined, bounded political case studies, carefully documenting the modeling assumptions and limitations.
-    \item \textbf{Optimization:} Investigate using related techniques like MaxSAT to find variable assignments that satisfy the \textit{maximum number} of rules, useful when dealing with potentially contradictory goals or soft constraints.
+    \item \textbf{Richer Modeling Logics:}
+        \begin{itemize}
+            \item Explore ways to represent uncertainty, beliefs, or preferences, potentially using probabilistic logics (e.g., Markov Logic Networks), modal logics (for necessity/possibility), or integrating with SMT solvers that can handle theories beyond pure Boolean logic (e.g., linear arithmetic for resource constraints).
+            \item Investigate temporal logics to model how political conditions change over time and how sequences of events affect consistency.
+        \end{itemize}
+    \item \textbf{Automation and NLP Integration:}
+        \begin{itemize}
+            \item Develop tools or frameworks to assist in the semi-automated translation from structured natural language descriptions of political scenarios (e.g., policy documents, treaty texts) into logical formulas and CNF. This remains a challenging NLP task but is crucial for broader applicability.
+            \item Explore using Large Language Models (LLMs) as a preliminary step for identifying key propositions and relationships from text, to be then refined and formalized by a human expert.
+        \end{itemize}
+    \item \textbf{Interface and Visualization:} Create a graphical user interface (GUI) for easier input of political rules and assumptions, visualization of the logical model (e.g., implication graphs), and interactive exploration of "what-if" scenarios and their outcomes.
+    \item \textbf{Advanced Solvers and Scalability:} Integrate or compare results with state-of-the-art SAT/SMT solvers (e.g., Z3, Glucose, CaDiCaL) to handle larger, more complex, and more realistic (though still simplified) models. Analyze solver performance on politically-inspired problem structures.
+    \item \textbf{Refined and Comparative Case Studies:}
+        \begin{itemize}
+            \item Apply the methodology to more rigorously defined, bounded historical or contemporary political case studies, with careful documentation of modeling assumptions, simplifications, and limitations.
+            \item Conduct comparative studies: model the same scenario using SAT and other formalisms (e.g., game theory, agent-based modeling) to understand the different types of insights each approach yields.
+        \end{itemize}
+    \item \textbf{Optimization and Explanation (MaxSAT & MUS):}
+        \begin{itemize}
+            \item Investigate using MaxSAT to find variable assignments that satisfy the \textit{maximum number} of rules, which is highly relevant when dealing with inherently contradictory goals or soft constraints in political negotiations.
+            \item Employ techniques for finding Minimal Unsatisfiable Subsets (MUS) or Minimal Correction Subsets (MCS) when a model is UNSAT. This would help pinpoint the core contradictions or identify the minimal changes needed to restore consistency, providing valuable diagnostic information.
+        \end{itemize}
+    \item \textbf{Methodological Refinement for Political Science:} Develop guidelines or best practices for political scientists or analysts on how to effectively translate political problems into logical formalisms suitable for SAT/SMT solving, including how to manage abstraction and interpret results meaningfully within a political context.
 \end{itemize}
 
 % --- BIBLIOGRAPHY ---
-% This command prints the bibliography generated by biber/bibtex
 \printbibliography
 
 % --- APPENDICES ---
-% Start appendix section
 \appendix
-\section{Appendix: Source Code Listings}
+\section{Appendix: Source Code Access} \label{app:sourcecode}
 
-% Include Python code listings using the defined style 'mystyle'
-\subsection{Propositional Resolution Solver (\texttt{Propositional Resolution.py})} \label{app:resolution}
-\lstinputlisting{Propositional Resolution.py}
+The complete project, including the LaTeX source for this paper, the BibTeX bibliography file, and the Python implementations of the SAT solvers, is available on GitHub at:
+\url{https://github.com/razvangoidaci/Politacal-SAT-Paper}
 
-\subsection{DP Solver (\texttt{DP.py})} \label{app:dp}
-\lstinputlisting{DP.py}
+The Python scripts for the implemented solvers can be accessed directly via the following links:
 
-\subsection{DPLL Solver (\texttt{DPLL.py})} \label{app:dpll}
-\lstinputlisting{DPLL.py}
+\subsection{Propositional Resolution Solver (\texttt{Propositional Resolution.py})} \label{app:resolution_code}
+The source code for the Propositional Resolution solver is available at:
+\url{https://github.com/razvangoidaci/Politacal-SAT-Paper/blob/main/Propositional%20Resolution.py}
+
+\subsection{DP Solver (\texttt{DP.py})} \label{app:dp_code}
+The source code for the Davis-Putnam (DP) solver is available at:
+\url{https://github.com/razvangoidaci/Politacal-SAT-Paper/blob/main/DP.py}
+
+\subsection{DPLL Solver (\texttt{DPLL.py})} \label{app:dpll_code}
+The source code for the Davis-Putnam-Logemann-Loveland (DPLL) solver is available at:
+\url{https://github.com/razvangoidaci/Politacal-SAT-Paper/blob/main/DPLL.py}
 
 % --- DOCUMENT END ---
 \end{document}
