@@ -1,5 +1,18 @@
+Input data for Scenario 2:
 4
 ¬N M
 ¬N ¬M T
 ¬T
+N
+Input data for Scenario 2.1:
+4
+¬N ¬M T
+¬T
+N
+¬M
+Input data for Scenario 2.2:
+4
+¬N M
+¬N ¬M T
+T
 N
