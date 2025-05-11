@@ -1,3 +1,4 @@
+Input data for Scenario 3:
 7
 ¬I R ¬W
 ¬R ¬S W
@@ -6,3 +7,23 @@
 ¬B ¬R P
 ¬P
 I
+Input data for Scenario 3.1:
+7
+¬I R ¬W
+¬R ¬S W
+¬W C
+¬P ¬S
+¬B ¬R P
+P
+I
+Input data for Scenario 3.2:
+9
+¬I R ¬W
+¬R ¬S W
+¬W C
+¬P ¬S
+¬B ¬R P
+¬P
+I
+B
+R
